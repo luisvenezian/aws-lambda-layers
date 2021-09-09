@@ -1,0 +1,12 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "aws-lambda-cron"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-1rxx3j42jqysj"
+s3_prefix = "aws-lambda-cron"
+region = "us-east-1"
+profile = "personal"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+parameter_overrides = "AmericaTimeZone=\"America/Sao_Paulo\""

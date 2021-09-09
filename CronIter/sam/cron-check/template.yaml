@@ -1,0 +1,50 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  cron-check
+
+  Lambda croniter layer with lambda example 
+
+Globals:
+  Function:
+    Timeout: 3
+
+Parameters:
+  AmericaTimeZone:
+    Type: String
+    Description: TZ for croniter usage
+    Default: America/Sao_Paulo
+
+Resources:
+  # Lambda Function
+  CronIterFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: croniter/
+      Description: Checks the croniter implementation
+      Handler: app.lambda_handler
+      Runtime: python3.8
+      Environment:
+        Variables:
+          TZ: !Ref AmericaTimeZone
+      Layers:
+        - !Ref CronIterLayer
+  
+  # Layer
+  CronIterLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      ContentUri: croniterlayer/
+      Description: croniter lib for cron checks  
+      CompatibleRuntimes:
+        - python3.8
+    Metadata:
+      BuildMethod: makefile
+
+Outputs:
+  CronIterFunction:
+    Description: "CronIter Lambda Function ARN"
+    Value: !GetAtt CronIterFunction.Arn
+  CronIterFunctionIamRole:
+    Description: "Implicit IAM Role created for CronIter function"
+    Value: !GetAtt CronIterFunctionRole.Arn
